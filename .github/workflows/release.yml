@@ -19,6 +19,9 @@ jobs:
             arch: arm64
           - os: windows
             arch: arm64
+          # Add new exclusion for linux/arm64
+          - os: linux
+            arch: arm64
     env:
       CGO_ENABLED: 0
 
@@ -38,7 +41,7 @@ jobs:
       run: |
         output="mcp-starter-${{ matrix.os }}-${{ matrix.arch }}"
         if [ "${{ matrix.os }}" = "windows" ]; then output="$output.exe"; fi
-        go build -o $output
+        cd src && go build -o ../$output
 
     - name: Upload Release Assets
       uses: actions/upload-release-asset@v1
