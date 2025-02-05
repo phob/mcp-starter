@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "Perplexity": {
+      "command": "uvx",
+      "args": ["mcp-perplexity"],
+      "env": {
+        "PERPLEXITY_API_KEY": "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",
+        "PERPLEXITY_MODEL_CHAT": "sonar-reasoning-pro",
+        "PERPLEXITY_MODEL": "sonar-pro"
+      }
+    }
+  }
+}
