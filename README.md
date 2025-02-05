@@ -13,7 +13,7 @@ A lightweight Go application that parses JSON configuration files and executes c
 
 ### Pre-built Binaries
 
-Download the latest release for your platform from the [Releases page](https://github.com/yourusername/mcp-starter/releases).
+Download the latest release for your platform from the [Releases page](https://github.com/daniel-lxs/mcp-starter/releases).
 
 ### From Source
 
@@ -102,3 +102,11 @@ Contributions are welcome! Please open an issue or submit a pull request.
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Windows Users
+The Windows executable is not code-signed. To run it:
+1. Right-click the .exe file
+2. Select "Properties"
+3. Check "Unblock" under the General tab
+4. Click "OK"
+5. Run the executable
