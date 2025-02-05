@@ -20,7 +20,7 @@ Download the latest release for your platform from the [Releases page](https://g
 1. Ensure you have Go installed (version 1.21 or higher)
 2. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/mcp-starter.git
+   git clone https://github.com/daniel-lxs/mcp-starter.git
    cd mcp-starter
    ```
 3. Build the application:
