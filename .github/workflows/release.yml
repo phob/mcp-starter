@@ -45,12 +45,31 @@ jobs:
         if [ "${{ matrix.os }}" = "windows" ]; then output="$output.exe"; fi
         cd src && go build -o ../$output
 
+    - name: Package Windows Executable
+      if: matrix.os == 'windows'
+      run: |
+        zip mcp-starter-windows-${{ matrix.arch }}.zip mcp-starter-windows-${{ matrix.arch }}.exe
+
     - name: Upload Release Assets
       uses: actions/upload-release-asset@v1.0.2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ github.event.release.upload_url }}
-        asset_path: ./mcp-starter-${{ matrix.os }}-${{ matrix.arch }}${{ matrix.os == 'windows' && '.exe' || '' }}
-        asset_name: mcp-starter-${{ matrix.os }}-${{ matrix.arch }}${{ matrix.os == 'windows' && '.exe' || '' }}
-        asset_content_type: application/octet-stream 
+        asset_path: ./mcp-starter-${{ matrix.os }}-${{ matrix.arch }}${{ matrix.os == 'windows' && '.zip' || (matrix.os != 'windows' && '' || '.exe') }}
+        asset_name: mcp-starter-${{ matrix.os }}-${{ matrix.arch }}${{ matrix.os == 'windows' && '.zip' || (matrix.os != 'windows' && '' || '.exe') }}
+        asset_content_type: application/octet-stream
+
+    - name: Generate Checksums
+      run: |
+        sha256sum mcp-starter-* > checksums.txt
+
+    - name: Upload Checksums
+      uses: actions/upload-release-asset@v1.0.2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: ./checksums.txt
+        asset_name: checksums.txt
+        asset_content_type: text/plain 
