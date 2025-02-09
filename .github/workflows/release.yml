@@ -42,8 +42,12 @@ jobs:
         GOARCH: ${{ matrix.arch }}
       run: |
         output="mcp-starter-${{ matrix.os }}-${{ matrix.arch }}"
-        if [ "${{ matrix.os }}" = "windows" ]; then output="$output.exe"; fi
-        cd src && go build -o ../$output
+        if [ "${{ matrix.os }}" = "windows" ]; then 
+          output="$output.exe"
+          cd src && go build -o ../$output main_windows.go
+        else
+          cd src && go build -o ../$output
+        fi
 
     - name: Package Windows Executable
       if: matrix.os == 'windows'
