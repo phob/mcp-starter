@@ -84,10 +84,9 @@ jobs:
       uses: actions/upload-release-asset@v1.0.2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        FILE: 'mcp-starter-*'
       with:
         upload_url: ${{ github.event.release.upload_url }}
         asset_path: ${{ github.workspace }}/artifacts/${{ env.FILE }}
         asset_name: ${{ env.FILE }}
-        asset_content_type: application/octet-stream
-      env:
-        FILE: ${{ contains(runner.os, 'Windows') && 'checksums.txt' || 'mcp-starter-*' }} 
+        asset_content_type: application/octet-stream 
