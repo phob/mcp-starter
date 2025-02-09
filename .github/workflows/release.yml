@@ -80,13 +80,18 @@ jobs:
         asset_name: checksums.txt
         asset_content_type: text/plain
 
+    - name: Setup GitHub CLI
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y gh
+
     - name: Upload All Binaries
-      uses: actions/upload-release-asset@v1.0.2
+      run: |
+        cd artifacts
+        for file in mcp-starter-*; do
+          gh release upload ${{ github.event.release.tag_name }} "$file" \
+            --repo $GITHUB_REPOSITORY \
+            --clobber
+        done
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        FILE: 'mcp-starter-*'
-      with:
-        upload_url: ${{ github.event.release.upload_url }}
-        asset_path: ${{ github.workspace }}/artifacts/${{ env.FILE }}
-        asset_name: ${{ env.FILE }}
-        asset_content_type: application/octet-stream 
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
