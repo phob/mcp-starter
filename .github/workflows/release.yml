@@ -35,19 +35,19 @@ jobs:
       uses: actions/setup-go@v4
       with:
         go-version: ${{ matrix.go-version }}
+        cache-dependency-path: src/go.sum
 
     - name: Build
       env:
         GOOS: ${{ matrix.os }}
         GOARCH: ${{ matrix.arch }}
       run: |
-        output="mcp-starter-${{ matrix.os }}-${{ matrix.arch }}"
+        cd src
+        output="../mcp-starter-${{ matrix.os }}-${{ matrix.arch }}"
         if [ "${{ matrix.os }}" = "windows" ]; then 
           output="$output.exe"
-          cd src && go build -o ../$output main_windows.go
-        else
-          cd src && go build -o ../$output
         fi
+        go build -o $output
 
     - name: Package Windows Executable
       if: matrix.os == 'windows'
@@ -60,8 +60,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ github.event.release.upload_url }}
-        asset_path: ./mcp-starter-${{ matrix.os }}-${{ matrix.arch }}${{ matrix.os == 'windows' && '.zip' || (matrix.os != 'windows' && '' || '.exe') }}
-        asset_name: mcp-starter-${{ matrix.os }}-${{ matrix.arch }}${{ matrix.os == 'windows' && '.zip' || (matrix.os != 'windows' && '' || '.exe') }}
+        asset_path: ./mcp-starter-${{ matrix.os }}-${{ matrix.arch }}${{ matrix.os == 'windows' && '.exe' || '' }}
+        asset_name: mcp-starter-${{ matrix.os }}-${{ matrix.arch }}${{ matrix.os == 'windows' && '.exe' || '' }}
         asset_content_type: application/octet-stream
 
     - name: Generate Checksums
