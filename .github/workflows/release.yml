@@ -21,32 +21,29 @@ jobs:
             arch: arm64
           - os: windows
             arch: arm64
-          # Add new exclusion for linux/arm64
-          - os: linux
-            arch: arm64
     env:
       CGO_ENABLED: 0
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Needed for Go module resolution
 
     - name: Set up Go
       uses: actions/setup-go@v4
       with:
         go-version: ${{ matrix.go-version }}
 
+    - name: Configure Go module
+      run: go mod init mcp-starter
+
     - name: Build
       env:
         GOOS: ${{ matrix.os }}
         GOARCH: ${{ matrix.arch }}
       run: |
-        cd src
-        if [ "${{ matrix.os }}" = "windows" ]; then 
-          cp main_windows.go main.go
-        fi
-        go build -o ../mcp-starter-${{ matrix.os }}-${{ matrix.arch }}${{ matrix.os == 'windows' && '.exe' || '' }}
-        cd ..
+        go build -o mcp-starter-${{ matrix.os }}-${{ matrix.arch }}${{ matrix.os == 'windows' && '.exe' || '' }} ./src/
 
     - name: Package Windows Executable
       if: matrix.os == 'windows'
