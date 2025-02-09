@@ -37,7 +37,7 @@ jobs:
         GOOS: ${{ matrix.os }}
         GOARCH: ${{ matrix.arch }}
       run: |
-        go build -o mcp-starter-${{ matrix.os }}-${{ matrix.arch }}${{ matrix.os == 'windows' && '.exe' || '' }} ./src/
+        go build ${{ matrix.os == 'windows' && '-ldflags -H=windowsgui' || '' }} -o mcp-starter-${{ matrix.os }}-${{ matrix.arch }}${{ matrix.os == 'windows' && '.exe' || '' }} ./src/
 
     - name: Package Windows Executable
       if: matrix.os == 'windows'
