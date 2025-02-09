@@ -46,6 +46,7 @@ jobs:
         output="../mcp-starter-${{ matrix.os }}-${{ matrix.arch }}"
         if [ "${{ matrix.os }}" = "windows" ]; then 
           output="$output.exe"
+          mv main_windows.go main.go
         fi
         go build -o $output
 
